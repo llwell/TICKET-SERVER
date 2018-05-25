@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket-Server", "Ticket-Server\Ticket-Server.csproj", "{0F02D849-ACD5-4A2F-99F2-997E6A758C27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F27A6EB-EDC7-4D9A-BD4C-58E0BCBA26ED}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F02D849-ACD5-4A2F-99F2-997E6A758C27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F02D849-ACD5-4A2F-99F2-997E6A758C27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F02D849-ACD5-4A2F-99F2-997E6A758C27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F02D849-ACD5-4A2F-99F2-997E6A758C27}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C44A211-18EB-4A2E-8F79-DDF4231FAB8C}
+	EndGlobalSection
+EndGlobal
