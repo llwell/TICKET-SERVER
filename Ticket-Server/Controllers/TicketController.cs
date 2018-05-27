@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Ticket_Server.Buss;
 using Ticket_Server.Common;
 using Senparc.Weixin;
 using Senparc.Weixin.Exceptions;
 using Senparc.Weixin.MP.TenPayLibV3;
+using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
+using Senparc.Weixin.MP.AdvancedAPIs;
+using Senparc.Weixin.MP;
+using Senparc.Weixin.HttpUtility;
 
 namespace Ticket_Server.Controllers
 {
@@ -25,7 +21,7 @@ namespace Ticket_Server.Controllers
         /// <param name="userApi"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Users([FromBody]UserApi userApi)
+        public ActionResult Users([FromBody]Common.UserApi userApi)
         {
             if (userApi == null)
                 return Json(new ResultsJson(new Message(CodeMessage.PostNull, "PostNull"), null));
@@ -51,16 +47,8 @@ namespace Ticket_Server.Controllers
                                                 ticketApi.param));
         }
 
-        /// <summary>
-        /// 微信用户类API
-        /// </summary>
-        /// <param name="userApi"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public string OAuth(string code, string state)
-        {
-            return "test";
-        }
+        
+
     }
-    
+
 }

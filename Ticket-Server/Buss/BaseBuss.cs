@@ -86,13 +86,10 @@ namespace Ticket_Server.Buss
         {
             bool b = true;
 #if !DEBUG
-            if (apiType != ApiType.UserApi)
+            var appBag = AppContainer.GetAppBag(token);
+            if (appBag == null)
             {
-                SessionBag sessionBag = SessionContainer.GetSession(token);
-                if (sessionBag == null)
-                {
-                    b = false;
-                }
+                b = false;
             }
 #endif
             return b;

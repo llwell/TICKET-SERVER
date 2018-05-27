@@ -19,11 +19,11 @@
     "Ticket_Server": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "WxOpen",
+      "launchUrl": "api/Ticket",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://172.16.10.11:5000/"
+      "applicationUrl": "http://[::]:80/"
     }
   }
 }

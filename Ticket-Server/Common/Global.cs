@@ -27,11 +27,15 @@ namespace Ticket_Server.Common
         {
             try
             {
-                RedisManager.ConfigurationOption = REDIS;
-                CacheStrategyFactory.RegisterObjectCacheStrategy(() => RedisContainerCacheStrategy.Instance);
+                if(REDIS != null)
+                {
+                    RedisManager.ConfigurationOption = REDIS;
+                    CacheStrategyFactory.RegisterObjectCacheStrategy(() => RedisContainerCacheStrategy.Instance);
+                }
             }
             catch
             {
+                CacheStrategyFactory.RegisterObjectCacheStrategy(null);
                 Console.WriteLine("Redis Error, Change Local");
             }
         }

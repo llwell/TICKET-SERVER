@@ -14,34 +14,30 @@ namespace Ticket_Server.Buss
             return ApiType.UserApi;
         }
 
-        public object Do_Login(object param)
+        public object Do_GetUser(object param)
         {
-            LoginParam loginParam = JsonConvert.DeserializeObject<LoginParam>(param.ToString());
-            if(loginParam == null)
+            UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
+            if(userParam == null)
             {
                 throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
             }
 
-            var jsonResult = SnsApi.JsCode2Json(Global.APPID, Global.APPSECRET, loginParam.code);
-            if (jsonResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
+            var appBag = AppContainer.GetAppBag(userParam.token);
+            if (appBag != null)
             {
-                var manager = Senparc.Weixin.Cache.Redis.RedisManager.Manager;
-                
-                AccessTokenContainer.Register(Global.APPID, Global.APPSECRET);
-                var sessionBag = SessionContainer.UpdateSession(null, jsonResult.openid, jsonResult.session_key);
-                return new { sessionId = sessionBag.Key };
+                return appBag;
             }
             else
             {
-                throw new ApiException(CodeMessage.SenparcCode, jsonResult.errmsg);
+                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
             }
         }
 
     }
 
-    public class LoginParam
+    public class UserParam
     {
-        public string code;
+        public string token;
     }
 
 }

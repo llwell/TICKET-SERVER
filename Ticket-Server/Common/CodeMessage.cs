@@ -19,16 +19,10 @@ namespace Ticket_Server.Common
 
         SenparcCode = 1000,
 
-        PaymentError = 3000,
-        PaymentTotalPriceZero=3001,
-        PaymentMsgError = 3002,
+        GetUserError = 3000,
 
         InvalidToken = 4000,
         InvalidMethod = 4001,
         InvalidParam = 4002,
-
-        GoodsNotFound=6001,
-
-        InitOrderError=7000,
     }
 }
