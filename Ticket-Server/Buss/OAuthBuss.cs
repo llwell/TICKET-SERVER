@@ -7,6 +7,7 @@ using Senparc.Weixin.HttpUtility;
 using Senparc.Weixin.MP.AdvancedAPIs;
 using Ticket_Server.Common;
 using Senparc.Weixin.MP;
+using System;
 
 namespace Ticket_Server.Buss
 {
@@ -27,6 +28,8 @@ namespace Ticket_Server.Buss
             UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
             if(userParam == null)
             {
+                Console.WriteLine("InvalidParam");
+                Console.WriteLine(param.ToString());
                 throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
             }
 
@@ -37,6 +40,8 @@ namespace Ticket_Server.Buss
             }
             else
             {
+                Console.WriteLine("GetUserError");
+                Console.WriteLine(userParam.token);
                 throw new ApiException(CodeMessage.GetUserError, "GetUserError");
             }
         }
