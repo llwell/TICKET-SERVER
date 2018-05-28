@@ -20,7 +20,7 @@ namespace Ticket_Server.Controllers
     public class WeixinController : Controller
     {
         [HttpGet]
-        public ActionResult OAuth(string code, string state, string returnUrl)
+        public ActionResult OAuthCallBack(string code, string state, string returnUrl)
         {
             if (string.IsNullOrEmpty(code))
             {
@@ -38,7 +38,7 @@ namespace Ticket_Server.Controllers
             OAuthAccessTokenResult result = null;
             try
             {
-                result = OAuthApi.GetAccessToken(Global.APPID, Global.APPSECRET, code);
+                result = Senparc.Weixin.MP.AdvancedAPIs.OAuthApi.GetAccessToken(Global.APPID, Global.APPSECRET, code);
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace Ticket_Server.Controllers
                     return Content("目标页面无效");
                 }
 
-                OAuthUserInfo userInfo = OAuthApi.GetUserInfo(result.access_token, result.openid);
+                OAuthUserInfo userInfo = Senparc.Weixin.MP.AdvancedAPIs.OAuthApi.GetUserInfo(result.access_token, result.openid);
                 var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, userInfo);
 
                 return Redirect(returnUrl + "#/?token=" + appBag.Key);
@@ -67,15 +67,20 @@ namespace Ticket_Server.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult GetOAuthUrl(string returnUrl)
+        /// <summary>
+        /// 微信授权登录类API
+        /// </summary>
+        /// <param name="oAuthApi"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult OAuth([FromBody]Common.OAuthApi oAuthApi)
         {
-            var appBag = AppContainer.UpdateAppBag(null, returnUrl, null);
-            string url =
-                OAuthApi.GetAuthorizeUrl(Global.APPID,
-                "http://weixin.llwell.net/api/Weixin/OAuth?returnUrl=" + returnUrl.UrlEncode(),
-                appBag.Key, OAuthScope.snsapi_userinfo);
-            return Json(new { url = url });
+            if (oAuthApi == null)
+                return Json(new ResultsJson(new Message(CodeMessage.PostNull, "PostNull"), null));
+            return Json(Global.BUSS.BussResults(ApiType.OAuthApi,
+                                                oAuthApi.token,
+                                                oAuthApi.method,
+                                                oAuthApi.param));
         }
     }
 }

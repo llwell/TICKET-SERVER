@@ -10,8 +10,19 @@ namespace Ticket_Server.Common
     /// </summary>
     public enum ApiType
     {
+        OAuthApi,
         UserApi,
         TicketApi,
+    }
+
+    /// <summary>
+    /// 微信授权登录API
+    /// </summary>
+    public class OAuthApi
+    {
+        public string method;
+        public string token;
+        public object param;
     }
 
     /// <summary>

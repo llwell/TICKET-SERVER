@@ -15,6 +15,7 @@ namespace Ticket_Server.Buss
     public interface IBuss
     {
         ApiType GetApiType();
+        bool NeedCheck();
     }
 
     /// <summary>
@@ -86,11 +87,15 @@ namespace Ticket_Server.Buss
         {
             bool b = true;
 #if !DEBUG
-            var appBag = AppContainer.GetAppBag(token);
-            if (appBag == null)
+            if (bussList[apiType].NeedCheck())
             {
-                b = false;
+                var appBag = AppContainer.GetAppBag(token);
+                if (appBag == null)
+                {
+                    b = false;
+                }
             }
+            
 #endif
             return b;
         }
