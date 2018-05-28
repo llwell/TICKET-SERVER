@@ -25,8 +25,8 @@ namespace Ticket_Server.Buss
 
         public object Do_GetUser(object param)
         {
-            try
-            {
+            //try
+            //{
                 UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
                 if (userParam == null)
                 {
@@ -46,15 +46,15 @@ namespace Ticket_Server.Buss
                     Console.WriteLine(userParam.token);
                     throw new ApiException(CodeMessage.GetUserError, "GetUserError");
                 }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
-                Console.WriteLine(ex.InnerException.Message);
-                Console.WriteLine(ex.InnerException.StackTrace);
-                throw new ApiException(CodeMessage.InnerError, "InnerError");
-            }
+            //}
+            //catch(Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    Console.WriteLine(ex.StackTrace);
+            //    Console.WriteLine(ex.InnerException.Message);
+            //    Console.WriteLine(ex.InnerException.StackTrace);
+            //    throw new ApiException(CodeMessage.InnerError, "InnerError");
+            //}
             
         }
 
