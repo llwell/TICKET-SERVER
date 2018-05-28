@@ -77,15 +77,15 @@ namespace Ticket_Server.Buss
             }
     #if DEBUG
             var openId = itemParam.token;
-    #endif
-    #if !DEBUG
-                AppBag appBag = AppContainer.GetAppBag(listParam.token);
+#endif
+#if !DEBUG
+                AppBag appBag = AppContainer.GetAppBag(itemParam.token);
                 if (appBag==null)
                 {
                     throw new ApiException(CodeMessage.GetUserError, "GetUserError");
                 }
                 var openId = appBag.Values;
-    #endif
+#endif
 
             TicketDao ticketDao = new TicketDao();
 
