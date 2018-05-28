@@ -138,6 +138,8 @@ namespace Ticket_Server.Buss
                     else
                     {
                         message = new Message(CodeMessage.InnerError, "InnerError");
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(ex.StackTrace);
                     }
                 }
                 return new ResultsJson(message, data);
