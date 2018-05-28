@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="aliyun.oss.sdk.core" Version="2.5.3" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
     <PackageReference Include="MySql.Data" Version="8.0.11" />
@@ -26,9 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Aliyun.OSS">
-      <HintPath>lib\Aliyun.OSS.dll</HintPath>
-    </Reference>
     <Reference Include="MrDatabase">
       <HintPath>lib\MrDatabase.dll</HintPath>
     </Reference>
