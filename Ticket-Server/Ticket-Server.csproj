@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Aliyun.OSS">
+      <HintPath>lib\Aliyun.OSS.dll</HintPath>
+    </Reference>
     <Reference Include="MrDatabase">
       <HintPath>lib\MrDatabase.dll</HintPath>
     </Reference>
