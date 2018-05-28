@@ -126,8 +126,8 @@ namespace Ticket_Server.Buss
                 object data = null;
                 try
                 {
-                    Console.WriteLine(param);
                     Console.WriteLine(methodInfo.ToString());
+                    Console.WriteLine(param);
                     data = methodInfo.Invoke(obj, new object[] { param });
                 }
                 catch (Exception ex)

@@ -25,7 +25,6 @@ namespace Ticket_Server.Buss
 
         public object Do_GetUser(object param)
         {
-            Console.WriteLine(param.ToString());
             try
             {
                 UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
@@ -48,8 +47,12 @@ namespace Ticket_Server.Buss
                     throw new ApiException(CodeMessage.GetUserError, "GetUserError");
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.InnerException.Message);
+                Console.WriteLine(ex.InnerException.StackTrace);
                 throw new ApiException(CodeMessage.InnerError, "InnerError");
             }
             
