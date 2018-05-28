@@ -25,20 +25,20 @@ namespace Ticket_Server.Common
         /// </summary>
         public static void StartUp()
         {
-            try
-            {
-                if(REDIS != null)
-                {
-                    RedisManager.ConfigurationOption = REDIS;
-                    Console.WriteLine(REDIS);
-                    CacheStrategyFactory.RegisterObjectCacheStrategy(() => RedisContainerCacheStrategy.Instance);
-                }
-            }
-            catch
-            {
-                CacheStrategyFactory.RegisterObjectCacheStrategy(null);
-                Console.WriteLine("Redis Error, Change Local");
-            }
+            //try
+            //{
+            //    if(REDIS != null)
+            //    {
+            //        RedisManager.ConfigurationOption = REDIS;
+            //        Console.WriteLine(REDIS);
+            //        CacheStrategyFactory.RegisterObjectCacheStrategy(() => RedisContainerCacheStrategy.Instance);
+            //    }
+            //}
+            //catch
+            //{
+            //    CacheStrategyFactory.RegisterObjectCacheStrategy(null);
+            //    Console.WriteLine("Redis Error, Change Local");
+            //}
         }
 
         public static string REDIS
