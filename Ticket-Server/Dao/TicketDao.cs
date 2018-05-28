@@ -171,7 +171,7 @@ namespace Ticket_Server.Dao
                 File.WriteAllBytes(ImageFilePath, bt); //保存图片到服务器，然后获取路径 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
