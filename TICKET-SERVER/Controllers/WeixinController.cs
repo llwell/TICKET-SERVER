@@ -29,7 +29,7 @@ namespace Ticket_Server.Controllers
 
             var checkBag = AppContainer.GetAppBag(state);
 
-            if(checkBag.Values != returnUrl)
+            if (checkBag.Values != returnUrl)
             {
                 return Content("验证错误！");
             }

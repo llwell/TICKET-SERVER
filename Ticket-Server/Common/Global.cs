@@ -30,6 +30,7 @@ namespace Ticket_Server.Common
                 if(REDIS != null)
                 {
                     RedisManager.ConfigurationOption = REDIS;
+                    Console.WriteLine(REDIS);
                     CacheStrategyFactory.RegisterObjectCacheStrategy(() => RedisContainerCacheStrategy.Instance);
                 }
             }
