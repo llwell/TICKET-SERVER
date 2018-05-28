@@ -126,6 +126,8 @@ namespace Ticket_Server.Buss
                 object data = null;
                 try
                 {
+                    Console.WriteLine(param);
+                    Console.WriteLine(methodInfo.ToString());
                     data = methodInfo.Invoke(obj, new object[] { param });
                 }
                 catch (Exception ex)
@@ -138,8 +140,8 @@ namespace Ticket_Server.Buss
                     else
                     {
                         message = new Message(CodeMessage.InnerError, "InnerError");
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine(ex.StackTrace);
+                        Console.WriteLine(ex.InnerException.Message);
+                        Console.WriteLine(ex.InnerException.StackTrace);
                     }
                 }
                 return new ResultsJson(message, data);

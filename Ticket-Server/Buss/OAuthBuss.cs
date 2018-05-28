@@ -25,25 +25,34 @@ namespace Ticket_Server.Buss
 
         public object Do_GetUser(object param)
         {
-            UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
-            if(userParam == null)
+            Console.WriteLine(param.ToString());
+            try
             {
-                Console.WriteLine("InvalidParam");
-                Console.WriteLine(param.ToString());
-                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
-            }
+                UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
+                if (userParam == null)
+                {
+                    Console.WriteLine("InvalidParam");
+                    Console.WriteLine(param.ToString());
+                    throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+                }
 
-            var appBag = AppContainer.GetAppBag(userParam.token);
-            if (appBag != null)
-            {
-                return appBag;
+                var appBag = AppContainer.GetAppBag(userParam.token);
+                if (appBag != null)
+                {
+                    return appBag;
+                }
+                else
+                {
+                    Console.WriteLine("GetUserError");
+                    Console.WriteLine(userParam.token);
+                    throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+                }
             }
-            else
+            catch
             {
-                Console.WriteLine("GetUserError");
-                Console.WriteLine(userParam.token);
-                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+                throw new ApiException(CodeMessage.InnerError, "InnerError");
             }
+            
         }
 
 
