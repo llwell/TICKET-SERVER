@@ -46,7 +46,7 @@ namespace Ticket_Server.Buss
 
         public object Do_InsertTicket(object param)
         {
-            InsertListParam listParam = JsonConvert.DeserializeObject<InsertListParam>(param.ToString());
+            TicketParam listParam = JsonConvert.DeserializeObject<TicketParam>(param.ToString());
             if (listParam == null)
             {
                 throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
@@ -65,13 +65,41 @@ namespace Ticket_Server.Buss
 
             TicketDao ticketDao = new TicketDao();
 
-            return ticketDao.insertTicket(openId,listParam);
+            return ticketDao.insertTicket(openId, listParam);
         }
 
+        public object Do_GetTicketItem(object param)
+        {
+            ItemParam itemParam = JsonConvert.DeserializeObject<ItemParam>(param.ToString());
+            if (itemParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+    #if DEBUG
+            var openId = itemParam.token;
+    #endif
+    #if !DEBUG
+                AppBag appBag = AppContainer.GetAppBag(listParam.token);
+                if (appBag==null)
+                {
+                    throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+                }
+                var openId = appBag.Values;
+    #endif
+
+            TicketDao ticketDao = new TicketDao();
+
+            return ticketDao.getTicketItem(openId, itemParam.ticketNum);
+        }
     }
     public class ListParam
     {
         public string token;
+    }
+    public class ItemParam
+    {
+        public string token;
+        public string ticketNum;//小票编码
     }
 
     public class ListResult
@@ -89,15 +117,15 @@ namespace Ticket_Server.Buss
         public string ticketPrice;//小票总价
     }
 
-    public class InsertListParam
+    public class TicketParam
     {
         public string token;
         public string ticketNum;//小票编码
         public string imgbasesrc;//小票图片
         public string shopName;//店名
-        public List<InsertBrandParam> goodsAll;//已完成
+        public List<BrandParam> goodsAll;//已完成
     }
-    public class InsertBrandParam
+    public class BrandParam
     {
         public string goodsName;//对应品牌
         public string goodsPrice;//对应品牌商品价格和

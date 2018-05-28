@@ -76,7 +76,7 @@ namespace Ticket_Server.Dao
         {
             string sql = "select sum(IFNULL(price,0)) from t_daigou_brand where ticketCode = '" + ticketCode + "'";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
-            if (dt.Rows.Count>0)
+            if (dt.Rows.Count > 0)
             {
                 return Convert.ToDouble(dt.Rows[0][0]);
             }
@@ -86,7 +86,33 @@ namespace Ticket_Server.Dao
             }
         }
 
-        public object insertTicket(string openId,InsertListParam listParam)
+        public TicketParam getTicketItem(string openId, string ticketCode)
+        {
+            string sql = "select b.brand,b.price,t.img,t.ticketCode,t.shopName from t_daigou_brand b,t_daigou_ticket t where b.ticketCode =t.ticketCode and b.ticketCode = '" + ticketCode + "' and t.openId = '" + openId + "'";
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                TicketParam tp = new TicketParam();
+                tp.imgbasesrc = dt.Rows[0]["img"].ToString();
+                tp.shopName = dt.Rows[0]["shopName"].ToString();
+                tp.ticketNum = dt.Rows[0]["ticketCode"].ToString();
+                tp.goodsAll = new List<BrandParam>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    BrandParam bp = new BrandParam();
+                    bp.goodsName = dt.Rows[i]["brand"].ToString();
+                    bp.goodsPrice = dt.Rows[i]["price"].ToString();
+                    tp.goodsAll.Add(bp);
+                }
+                return tp;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object insertTicket(string openId, TicketParam listParam)
         {
             string fileName = listParam.ticketNum + ".jpg";
             string base64String = listParam.imgbasesrc.Split(",")[1];
