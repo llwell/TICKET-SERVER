@@ -24,7 +24,7 @@ namespace Ticket_Server.Dao
         public ListResult getListByOpenId(string openId)
         {
             string sql = "select * from t_daigou_ticket where openId = '" + openId + "'";
-            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_daigou_ticket").Tables[0];
             ListResult listResult = new ListResult();
             List<ListItem> tabPaneOneData = new List<ListItem>();//待处理
             List<ListItem> tabPaneTwoData = new List<ListItem>();//审批中
@@ -75,7 +75,7 @@ namespace Ticket_Server.Dao
         public double getTicketPrice(string ticketCode)
         {
             string sql = "select sum(IFNULL(price,0)) from t_daigou_brand where ticketCode = '" + ticketCode + "'";
-            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_daigou_ticket").Tables[0];
             if (dt.Rows.Count > 0)
             {
                 return Convert.ToDouble(dt.Rows[0][0]);
@@ -89,7 +89,7 @@ namespace Ticket_Server.Dao
         public TicketParam getTicketItem(string openId, string ticketCode)
         {
             string sql = "select b.brand,b.price,t.img,t.ticketCode,t.shopName from t_daigou_brand b,t_daigou_ticket t where b.ticketCode =t.ticketCode and b.ticketCode = '" + ticketCode + "' and t.openId = '" + openId + "'";
-            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_daigou_ticket").Tables[0];
             if (dt.Rows.Count > 0)
             {
                 TicketParam tp = new TicketParam();
@@ -129,7 +129,12 @@ namespace Ticket_Server.Dao
             }
             try
             {
-                string ticketsql = "select * from t_daigou_ticket where ";
+                string ticketsql = "select * from t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
+                DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(ticketsql, "t_daigou_ticket").Tables[0];
+                if (dt.Rows.Count>0)
+                {
+                    return CodeMessage.repeatTicketError;
+                }
 
 
                 string sql = "insert into t_daigou_ticket(openId,createTime,img,ticketCode,shopName,status) " +
