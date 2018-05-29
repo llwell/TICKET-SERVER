@@ -59,7 +59,7 @@ namespace Ticket_Server.Controllers
                 OAuthUserInfo userInfo = Senparc.Weixin.MP.AdvancedAPIs.OAuthApi.GetUserInfo(result.access_token, result.openid);
                 var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, userInfo);
 
-                return Redirect(returnUrl + "#/?token=" + appBag.Key);
+                return Redirect(returnUrl + "?token=" + appBag.Key);
             }
             catch (ErrorJsonResultException ex)
             {

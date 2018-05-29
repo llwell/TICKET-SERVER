@@ -42,9 +42,9 @@ namespace Ticket_Server.Buss
                 }
                 else
                 {
-                    Console.WriteLine("GetUserError");
+                    Console.WriteLine("InvalidToken");
                     Console.WriteLine(userParam.token);
-                    throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+                    throw new ApiException(CodeMessage.InvalidToken, "InvalidToken");
                 }
             //}
             //catch(Exception ex)
