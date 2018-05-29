@@ -114,19 +114,6 @@ namespace Ticket_Server.Dao
 
         public object insertTicket(string openId, TicketParam listParam)
         {
-            string fileName = listParam.ticketNum + ".jpg";
-            string base64String = listParam.imgbasesrc.Split(",")[1];
-            if (saveImageByBase64String(base64String, fileName))
-            {
-                if (!updateImgToOSS(fileName))
-                {
-                    return CodeMessage.updateOssError;
-                }
-            }
-            else
-            {
-                return CodeMessage.updateImgError;
-            }
             try
             {
                 string ticketsql = "select * from t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
@@ -136,6 +123,19 @@ namespace Ticket_Server.Dao
                     return CodeMessage.repeatTicketError;
                 }
 
+                string fileName = listParam.ticketNum + ".jpg";
+                string base64String = listParam.imgbasesrc.Split(",")[1];
+                if (saveImageByBase64String(base64String, fileName))
+                {
+                    if (!updateImgToOSS(fileName))
+                    {
+                        return CodeMessage.updateOssError;
+                    }
+                }
+                else
+                {
+                    return CodeMessage.updateImgError;
+                }
 
                 string sql = "insert into t_daigou_ticket(openId,createTime,img,ticketCode,shopName,status) " +
                     "values('" + openId + "',now(),'" + Global.OssUrl+ Global.OssDir + fileName + "','" + listParam.ticketNum + "','" + listParam.shopName + "','0')";
@@ -162,6 +162,50 @@ namespace Ticket_Server.Dao
                 return CodeMessage.insertTicketError;
             }
             return CodeMessage.insertTicketSuccess;
+        }
+
+        public object updatTicket(string openId, TicketParam listParam)
+        {
+            string ticketsql = "select status from t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(ticketsql, "t_daigou_ticket").Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0][0].ToString()=="0"|| dt.Rows[0][0].ToString() == "8"|| dt.Rows[0][0].ToString() == "9")
+                {
+
+                }
+                else
+                {
+                    return CodeMessage.updateTicketStatusError;
+                }
+            }
+            else
+            {
+                return CodeMessage.TicketZeroError;
+            }
+            string sql = "delete from  t_daigou_brand where ticketCode = '" + listParam.ticketNum + "'";
+            if (DatabaseOperationWeb.ExecuteDML(sql))
+            {
+                ArrayList al = new ArrayList();
+                foreach (var goods in listParam.goodsAll)
+                {
+                    string sql1 = "insert into t_daigou_brand(ticketCode,brand,price) values('" + listParam.ticketNum + "','" + goods.goodsName + "','" + goods.goodsPrice + "')";
+                    al.Add(sql1);
+                }
+                if (DatabaseOperationWeb.ExecuteDML(al))
+                {
+                    string upsql = "update t_daigou_ticket set status='0' where ticketCode = '" + listParam.ticketNum + "'";
+                }
+                else
+                {
+                    return CodeMessage.updateTicketError;
+                }
+            }
+            else
+            {
+                return CodeMessage.updateTicketError;
+            }
+            return CodeMessage.updateTicketSuccess;
         }
 
         /// <summary>

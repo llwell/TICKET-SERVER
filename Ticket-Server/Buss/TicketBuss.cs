@@ -74,8 +74,15 @@ namespace Ticket_Server.Buss
 #endif
 
             TicketDao ticketDao = new TicketDao();
-
-            return ticketDao.insertTicket(openId, listParam);
+            if (listParam.state==null)
+            {
+                return ticketDao.insertTicket(openId, listParam);
+            }
+            else
+            {
+                return ticketDao.updatTicket(openId, listParam);
+            }
+            
         }
 
 
@@ -109,28 +116,7 @@ namespace Ticket_Server.Buss
         }
 
 
-        public object updateTicket(object param)
-        {
-            TicketParam listParam = JsonConvert.DeserializeObject<TicketParam>(param.ToString());
-            if (listParam == null)
-            {
-                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
-            }
-#if DEBUG
-            var openId = listParam.token;
-#endif
-#if !DEBUG
-            AppBag appBag = AppContainer.GetAppBag(listParam.token);
-            if (appBag==null)
-            {
-                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
-            }
-            var openId = appBag.Values;
-#endif
-            TicketDao ticketDao = new TicketDao();
-
-            return ticketDao.insertTicket(openId, listParam);
-        }
+       
     }
     public class ListParam
     {
@@ -163,6 +149,7 @@ namespace Ticket_Server.Buss
         public string ticketNum;//小票编码
         public string imgbasesrc;//小票图片
         public string shopName;//店名
+        public string state;//状态
         public List<BrandParam> goodsAll;//已完成
     }
     public class BrandParam

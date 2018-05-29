@@ -31,5 +31,10 @@ namespace Ticket_Server.Common
         updateOssError = 5002,//上传图片到oss失败
         insertTicketError = 5003,//上传小票信息到数据库失败
         repeatTicketError = 5004,//小票号重复
+
+        updateTicketSuccess = 5100,//修改小票信息成功
+        updateTicketError = 5101,//修改小票信息到数据库失败
+        TicketZeroError = 5102,//未查到票信息
+        updateTicketStatusError = 5103,//修改的小票状态不对
     }
 }
