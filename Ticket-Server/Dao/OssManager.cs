@@ -4,17 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ticket_Server.Common;
 
 namespace Ticket_Server.Dao
 {
     public static class OssManager
     {
-        private static string _accessId = "LTAIfASZSnhH7MjZ";
-        private static string _accessKey = "Rdqi0iEjhIMSDBKvEIji5zlxStpJUK";
-        private static string _http = "http://oss-cn-beijing.aliyuncs.com";
-        public static string _bucket = "ecc-product";
-        public static string _ossUrl = "http://ecc-product.oss-cn-beijing.aliyuncs.com/";
-        public static string _ossDir = "daigou/";
 
         private static OssClient ossClient;
 
@@ -22,7 +17,7 @@ namespace Ticket_Server.Dao
         {
             if (ossClient == null)
             {
-                ossClient = new OssClient(_http, _accessId, _accessKey);
+                ossClient = new OssClient(Global.OssHttp, Global.AccessId, Global.AccessKey);
             }
             return ossClient;
         }
