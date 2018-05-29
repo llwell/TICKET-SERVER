@@ -74,7 +74,7 @@ namespace Ticket_Server.Buss
 #endif
 
             TicketDao ticketDao = new TicketDao();
-            if (listParam.state==null)
+            if (listParam.state==null|| listParam.state =="")
             {
                 return ticketDao.insertTicket(openId, listParam);
             }
