@@ -20,6 +20,11 @@ namespace Ticket_Server.Buss
             return true;
         }
 
+        /// <summary>
+        /// 获取小票列表
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public object Do_GetTicketList(object param)
         {
             ListParam listParam = JsonConvert.DeserializeObject<ListParam>(param.ToString());
@@ -44,6 +49,11 @@ namespace Ticket_Server.Buss
             return listResult;
         }
 
+        /// <summary>
+        /// 保存小票信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public object Do_InsertTicket(object param)
         {
             TicketParam listParam = JsonConvert.DeserializeObject<TicketParam>(param.ToString());
@@ -68,6 +78,12 @@ namespace Ticket_Server.Buss
             return ticketDao.insertTicket(openId, listParam);
         }
 
+
+        /// <summary>
+        /// 根据小票编号获取小票信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public object Do_GetTicketItem(object param)
         {
             ItemParam itemParam = JsonConvert.DeserializeObject<ItemParam>(param.ToString());
@@ -90,6 +106,30 @@ namespace Ticket_Server.Buss
             TicketDao ticketDao = new TicketDao();
 
             return ticketDao.getTicketItem(openId, itemParam.ticketNum);
+        }
+
+
+        public object updateTicket(object param)
+        {
+            TicketParam listParam = JsonConvert.DeserializeObject<TicketParam>(param.ToString());
+            if (listParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+#if DEBUG
+            var openId = listParam.token;
+#endif
+#if !DEBUG
+            AppBag appBag = AppContainer.GetAppBag(listParam.token);
+            if (appBag==null)
+            {
+                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+            }
+            var openId = appBag.Values;
+#endif
+            TicketDao ticketDao = new TicketDao();
+
+            return ticketDao.insertTicket(openId, listParam);
         }
     }
     public class ListParam

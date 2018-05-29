@@ -129,8 +129,11 @@ namespace Ticket_Server.Dao
             }
             try
             {
+                string ticketsql = "select * from t_daigou_ticket where ";
+
+
                 string sql = "insert into t_daigou_ticket(openId,createTime,img,ticketCode,shopName,status) " +
-                    "values('" + openId + "',now(),'" + OssManager._ossUrl+OssManager._ossDir + fileName + "','" + listParam.ticketNum + "','" + listParam.shopName + "','0')";
+                    "values('" + openId + "',now(),'" + Global.OssUrl+ Global.OssDir + fileName + "','" + listParam.ticketNum + "','" + listParam.shopName + "','0')";
                 if (DatabaseOperationWeb.ExecuteDML(sql))
                 {
                     ArrayList al = new ArrayList();
@@ -194,7 +197,7 @@ namespace Ticket_Server.Dao
                 metadata.UserMetadata.Add("fromfileName", imgFileName);
                 using (var fs = File.OpenRead(path + "\\" + fileName))
                 {
-                    var ret = client.PutObject(OssManager._bucket, OssManager._ossDir + imgFileName, fs, metadata);
+                    var ret = client.PutObject(Global.OssBucket, Global.OssDir + imgFileName, fs, metadata);
                 }
                 return true;
             }
