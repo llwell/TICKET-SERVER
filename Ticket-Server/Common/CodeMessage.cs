@@ -36,5 +36,8 @@ namespace Ticket_Server.Common
         updateTicketError = 5101,//修改小票信息到数据库失败
         TicketZeroError = 5102,//未查到票信息
         updateTicketStatusError = 5103,//修改的小票状态不对
+
+        deleteTicketSuccess = 5200,//删除小票信息成功
+        deleteTicketError = 5201,//删除小票信息失败
     }
 }

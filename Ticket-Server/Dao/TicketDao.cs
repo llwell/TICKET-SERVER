@@ -164,7 +164,7 @@ namespace Ticket_Server.Dao
             return CodeMessage.insertTicketSuccess;
         }
 
-        public CodeMessage updatTicket(string openId, TicketParam listParam)
+        public CodeMessage updateTicket(string openId, TicketParam listParam)
         {
             string ticketsql = "select status from t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(ticketsql, "t_daigou_ticket").Tables[0];
@@ -206,6 +206,33 @@ namespace Ticket_Server.Dao
                 return CodeMessage.updateTicketError;
             }
             return CodeMessage.updateTicketSuccess;
+        }
+
+        public CodeMessage deleteTicket(string openId, TicketParam listParam)
+        {
+            string ticketsql = "select status from t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "' and openId = '" + openId + "'";
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(ticketsql, "t_daigou_ticket").Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                ArrayList al = new ArrayList();
+                string sql = "delete from  t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
+                string sql1 = "delete from  t_daigou_brand where ticketCode = '" + listParam.ticketNum + "'";
+                al.Add(sql);
+                al.Add(sql1);
+                if (DatabaseOperationWeb.ExecuteDML(al))
+                {
+                    return CodeMessage.deleteTicketSuccess;
+                }
+                else
+                {
+                    return CodeMessage.deleteTicketError;
+                }
+            }
+            else
+            {
+                return CodeMessage.TicketZeroError;
+            }
+            
         }
 
         /// <summary>

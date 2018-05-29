@@ -88,7 +88,7 @@ namespace Ticket_Server.Buss
             }
             else
             {
-                CodeMessage s = ticketDao.updatTicket(openId, listParam);
+                CodeMessage s = ticketDao.updateTicket(openId, listParam);
                 if (s.ToString() == "updateTicketSuccess")
                 {
                     return "updateTicketSuccess";
@@ -131,8 +131,44 @@ namespace Ticket_Server.Buss
             return ticketDao.getTicketItem(openId, itemParam.ticketNum);
         }
 
+        /// <summary>
+        /// 删除小票信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public object Do_DelTicket(object param)
+        {
+            TicketParam listParam = JsonConvert.DeserializeObject<TicketParam>(param.ToString());
+            if (listParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+#if DEBUG
+            var openId = listParam.token;
+#endif
+#if !DEBUG
+            AppBag appBag = AppContainer.GetAppBag(listParam.token);
+            if (appBag==null)
+            {
+                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+            }
+            var openId = appBag.Values;
+#endif
 
-       
+            TicketDao ticketDao = new TicketDao();
+            CodeMessage s = ticketDao.deleteTicket(openId, listParam);
+            if (s.ToString() == "deleteTicketSuccess")
+            {
+                return "deleteTicketSuccess";
+            }
+            else
+            {
+                throw new ApiException(s, s.ToString());
+            }
+
+        }
+
+
     }
     public class ListParam
     {
