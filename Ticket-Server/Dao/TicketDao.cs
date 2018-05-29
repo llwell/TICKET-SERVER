@@ -214,25 +214,46 @@ namespace Ticket_Server.Dao
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(ticketsql, "t_daigou_ticket").Tables[0];
             if (dt.Rows.Count > 0)
             {
-                ArrayList al = new ArrayList();
-                string sql = "delete from  t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
-                string sql1 = "delete from  t_daigou_brand where ticketCode = '" + listParam.ticketNum + "'";
-                al.Add(sql);
-                al.Add(sql1);
-                if (DatabaseOperationWeb.ExecuteDML(al))
+                if (dt.Rows[0][0].ToString() == "0" || dt.Rows[0][0].ToString() == "8" || dt.Rows[0][0].ToString() == "9")
                 {
-                    return CodeMessage.deleteTicketSuccess;
+                    ArrayList al = new ArrayList();
+                    string sql = "delete from  t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
+                    string sql1 = "delete from  t_daigou_brand where ticketCode = '" + listParam.ticketNum + "'";
+                    al.Add(sql);
+                    al.Add(sql1);
+                    if (DatabaseOperationWeb.ExecuteDML(al))
+                    {
+                        return CodeMessage.deleteTicketSuccess;
+                    }
+                    else
+                    {
+                        return CodeMessage.deleteTicketError;
+                    }
                 }
                 else
                 {
                     return CodeMessage.deleteTicketError;
                 }
+               
             }
             else
             {
                 return CodeMessage.TicketZeroError;
             }
-            
+
+        }
+        public string getQRCoder(string openId)
+        {
+            string sql = "select qrcoder from t_user_list where openId = '" + openId + "'";
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_user_list").Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0][0].ToString();
+            }
+            else
+            {
+                return "";
+            }
         }
 
         /// <summary>

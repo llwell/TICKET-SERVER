@@ -39,5 +39,7 @@ namespace Ticket_Server.Common
 
         deleteTicketSuccess = 5200,//删除小票信息成功
         deleteTicketError = 5201,//删除小票信息失败
+
+        QRCoderError=6001,//获取二维码失败
     }
 }

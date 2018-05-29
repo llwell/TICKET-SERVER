@@ -168,6 +168,43 @@ namespace Ticket_Server.Buss
 
         }
 
+        /// <summary>
+        /// 获取二维码
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public object Do_GetQRCoder(object param)
+        {
+            ListParam listParam = JsonConvert.DeserializeObject<ListParam>(param.ToString());
+            if (listParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+#if DEBUG
+            var openId = listParam.token;
+#endif
+#if !DEBUG
+            AppBag appBag = AppContainer.GetAppBag(listParam.token);
+            if (appBag==null)
+            {
+                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+            }
+            var openId = appBag.Values;
+#endif
+
+            TicketDao ticketDao = new TicketDao();
+            string s = ticketDao.getQRCoder(openId);
+            if (s != "")
+            {
+                return s;
+            }
+            else
+            {
+                throw new ApiException(CodeMessage.QRCoderError, "QRCoderError");
+            }
+
+        }
+
 
     }
     public class ListParam
@@ -208,5 +245,10 @@ namespace Ticket_Server.Buss
     {
         public string goodsName;//对应品牌
         public string goodsPrice;//对应品牌商品价格和
+    }
+
+    public class QRCoder
+    {
+        public string imgUrl;
     }
 }
