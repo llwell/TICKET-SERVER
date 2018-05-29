@@ -112,7 +112,7 @@ namespace Ticket_Server.Dao
             }
         }
 
-        public object insertTicket(string openId, TicketParam listParam)
+        public CodeMessage insertTicket(string openId, TicketParam listParam)
         {
             try
             {
@@ -164,7 +164,7 @@ namespace Ticket_Server.Dao
             return CodeMessage.insertTicketSuccess;
         }
 
-        public object updatTicket(string openId, TicketParam listParam)
+        public CodeMessage updatTicket(string openId, TicketParam listParam)
         {
             string ticketsql = "select status from t_daigou_ticket where ticketCode = '" + listParam.ticketNum + "'";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(ticketsql, "t_daigou_ticket").Tables[0];

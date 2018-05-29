@@ -76,11 +76,27 @@ namespace Ticket_Server.Buss
             TicketDao ticketDao = new TicketDao();
             if (listParam.state==null|| listParam.state =="")
             {
-                return ticketDao.insertTicket(openId, listParam);
+                CodeMessage s = ticketDao.insertTicket(openId, listParam);
+                if (s.ToString()== "insertTicketSuccess")
+                {
+                    return "insertTicketSuccess";
+                }
+                else
+                {
+                    throw new ApiException(s, s.ToString());
+                }
             }
             else
             {
-                return ticketDao.updatTicket(openId, listParam);
+                CodeMessage s = ticketDao.updatTicket(openId, listParam);
+                if (s.ToString() == "updateTicketSuccess")
+                {
+                    return "updateTicketSuccess";
+                }
+                else
+                {
+                    throw new ApiException(s, s.ToString());
+                }
             }
             
         }
