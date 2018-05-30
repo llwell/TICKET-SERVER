@@ -12,6 +12,8 @@ using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using Ticket_Server.Common;
 using Senparc.Weixin.HttpUtility;
 using Senparc.Weixin.Containers;
+using Senparc.Weixin.WxOpen.Containers;
+using Newtonsoft.Json;
 
 namespace Ticket_Server.Controllers
 {
@@ -57,7 +59,9 @@ namespace Ticket_Server.Controllers
                 }
 
                 OAuthUserInfo userInfo = Senparc.Weixin.MP.AdvancedAPIs.OAuthApi.GetUserInfo(result.access_token, result.openid);
-                var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, userInfo);
+                string jsonUser = JsonConvert.SerializeObject(userInfo);
+
+                var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, jsonUser);
 
                 return Redirect(returnUrl + "?token=" + appBag.Key);
             }

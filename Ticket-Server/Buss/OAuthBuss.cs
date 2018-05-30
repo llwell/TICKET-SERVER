@@ -8,6 +8,7 @@ using Senparc.Weixin.MP.AdvancedAPIs;
 using Ticket_Server.Common;
 using Senparc.Weixin.MP;
 using System;
+using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 
 namespace Ticket_Server.Buss
 {
@@ -36,9 +37,10 @@ namespace Ticket_Server.Buss
                 }
 
                 var appBag = AppContainer.GetAppBag(userParam.token);
+                OAuthUserInfo userInfo = JsonConvert.DeserializeObject<OAuthUserInfo>(appBag.ToString());
                 if (appBag != null)
                 {
-                    return appBag;
+                    return userInfo;
                 }
                 else
                 {

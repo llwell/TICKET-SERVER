@@ -38,7 +38,7 @@ namespace Ticket_Server.Common
         /// <summary>
         /// AppObj
         /// </summary>
-        public object AppObj
+        public string AppObj
         {
             get { return _appObj; }
 #if NET35 || NET40
@@ -63,7 +63,7 @@ namespace Ticket_Server.Common
 
         private string _key;
         private string _values;
-        private object _appObj;
+        private string _appObj;
         private DateTime _expireTime;
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Ticket_Server.Common
         /// <param name="values">值</param>
         /// <param name="appObj">对象</param>
         /// <returns></returns>
-        public static AppBag UpdateAppBag(string key, string values, object appObj)
+        public static AppBag UpdateAppBag(string key, string values, string appObj)
         {
             key = key ?? SessionHelper.GetNewThirdSessionName();
 
