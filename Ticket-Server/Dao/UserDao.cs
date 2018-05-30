@@ -74,9 +74,9 @@ namespace Ticket_Server.Dao
                 }
                 return drawCode;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return "";
+                return ex.ToString();
             }
             
         }
