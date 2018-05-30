@@ -64,9 +64,6 @@ namespace Ticket_Server.Controllers
 
                 var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, jsonUser);
 
-                UserDao userDao = new UserDao();
-                userDao.insertUser(userInfo);
-
                 return Redirect(returnUrl + "#/?token=" + appBag.Key);
             }
             catch (ErrorJsonResultException ex)

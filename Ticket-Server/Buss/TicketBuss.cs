@@ -43,6 +43,8 @@ namespace Ticket_Server.Buss
             }
             var openId = appBag.Values;
 #endif
+            UserDao userDao = new UserDao();
+            userDao.insertUser(openId);
             TicketDao ticketDao = new TicketDao();
             ListResult listResult = ticketDao.getListByOpenId(openId);
 
