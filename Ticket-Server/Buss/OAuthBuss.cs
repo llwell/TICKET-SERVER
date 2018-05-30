@@ -37,7 +37,7 @@ namespace Ticket_Server.Buss
                 }
 
                 var appBag = AppContainer.GetAppBag(userParam.token);
-                OAuthUserInfo userInfo = JsonConvert.DeserializeObject<OAuthUserInfo>(appBag.ToString());
+                OAuthUserInfo userInfo = JsonConvert.DeserializeObject<OAuthUserInfo>(appBag.AppObj.ToString());
                 if (appBag != null)
                 {
                     return userInfo;
