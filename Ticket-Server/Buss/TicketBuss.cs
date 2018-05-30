@@ -74,8 +74,31 @@ namespace Ticket_Server.Buss
 #endif
 
             TicketDao ticketDao = new TicketDao();
-
-            return ticketDao.insertTicket(openId, listParam);
+            if (listParam.state==null|| listParam.state =="")
+            {
+                CodeMessage s = ticketDao.insertTicket(openId, listParam);
+                if (s.ToString()== "insertTicketSuccess")
+                {
+                    return "insertTicketSuccess";
+                }
+                else
+                {
+                    throw new ApiException(s, s.ToString());
+                }
+            }
+            else
+            {
+                CodeMessage s = ticketDao.updateTicket(openId, listParam);
+                if (s.ToString() == "updateTicketSuccess")
+                {
+                    return "updateTicketSuccess";
+                }
+                else
+                {
+                    throw new ApiException(s, s.ToString());
+                }
+            }
+            
         }
 
 
@@ -108,8 +131,12 @@ namespace Ticket_Server.Buss
             return ticketDao.getTicketItem(openId, itemParam.ticketNum);
         }
 
-
-        public object updateTicket(object param)
+        /// <summary>
+        /// 删除小票信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public object Do_DelTicket(object param)
         {
             TicketParam listParam = JsonConvert.DeserializeObject<TicketParam>(param.ToString());
             if (listParam == null)
@@ -127,10 +154,58 @@ namespace Ticket_Server.Buss
             }
             var openId = appBag.Values;
 #endif
-            TicketDao ticketDao = new TicketDao();
 
-            return ticketDao.insertTicket(openId, listParam);
+            TicketDao ticketDao = new TicketDao();
+            CodeMessage s = ticketDao.deleteTicket(openId, listParam);
+            if (s.ToString() == "deleteTicketSuccess")
+            {
+                return "deleteTicketSuccess";
+            }
+            else
+            {
+                throw new ApiException(s, s.ToString());
+            }
+
         }
+
+        /// <summary>
+        /// 获取二维码
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public object Do_GetQRCoder(object param)
+        {
+            ListParam listParam = JsonConvert.DeserializeObject<ListParam>(param.ToString());
+            if (listParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+#if DEBUG
+            var openId = listParam.token;
+#endif
+#if !DEBUG
+            AppBag appBag = AppContainer.GetAppBag(listParam.token);
+            if (appBag==null)
+            {
+                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+            }
+            var openId = appBag.Values;
+#endif
+
+            TicketDao ticketDao = new TicketDao();
+            string s = ticketDao.getQRCoder(openId);
+            if (s != "")
+            {
+                return s;
+            }
+            else
+            {
+                throw new ApiException(CodeMessage.QRCoderError, "QRCoderError");
+            }
+
+        }
+
+
     }
     public class ListParam
     {
@@ -163,11 +238,17 @@ namespace Ticket_Server.Buss
         public string ticketNum;//小票编码
         public string imgbasesrc;//小票图片
         public string shopName;//店名
+        public string state;//状态
         public List<BrandParam> goodsAll;//已完成
     }
     public class BrandParam
     {
         public string goodsName;//对应品牌
         public string goodsPrice;//对应品牌商品价格和
+    }
+
+    public class QRCoder
+    {
+        public string imgUrl;
     }
 }

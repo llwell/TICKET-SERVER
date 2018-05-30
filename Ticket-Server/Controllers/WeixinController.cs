@@ -63,7 +63,7 @@ namespace Ticket_Server.Controllers
 
                 var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, jsonUser);
 
-                return Redirect(returnUrl + "?token=" + appBag.Key);
+                return Redirect(returnUrl + "#/?token=" + appBag.Key);
             }
             catch (ErrorJsonResultException ex)
             {
