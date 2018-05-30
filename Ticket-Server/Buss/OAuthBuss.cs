@@ -28,26 +28,28 @@ namespace Ticket_Server.Buss
         {
             //try
             //{
-                UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
-                if (userParam == null)
-                {
-                    Console.WriteLine("InvalidParam");
-                    Console.WriteLine(param.ToString());
-                    throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
-                }
+            UserParam userParam = JsonConvert.DeserializeObject<UserParam>(param.ToString());
+            if (userParam == null)
+            {
+                Console.WriteLine("InvalidParam");
+                Console.WriteLine(param.ToString());
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
 
-                var appBag = AppContainer.GetAppBag(userParam.token);
-                OAuthUserInfo userInfo = JsonConvert.DeserializeObject<OAuthUserInfo>(appBag.AppObj.ToString());
-                if (appBag != null)
-                {
-                    return userInfo;
-                }
-                else
-                {
-                    Console.WriteLine("InvalidToken");
-                    Console.WriteLine(userParam.token);
-                    throw new ApiException(CodeMessage.InvalidToken, "InvalidToken");
-                }
+            var appBag = AppContainer.GetAppBag(userParam.token);
+            OAuthUserInfo userInfo = JsonConvert.DeserializeObject<OAuthUserInfo>(appBag.AppObj.ToString());
+            if (appBag != null)
+            {
+                UserDao userDao = new UserDao();
+                userDao.insertUser(userInfo);
+                return userInfo;
+            }
+            else
+            {
+                Console.WriteLine("InvalidToken");
+                Console.WriteLine(userParam.token);
+                throw new ApiException(CodeMessage.InvalidToken, "InvalidToken");
+            }
             //}
             //catch(Exception ex)
             //{
@@ -57,7 +59,7 @@ namespace Ticket_Server.Buss
             //    Console.WriteLine(ex.InnerException.StackTrace);
             //    throw new ApiException(CodeMessage.InnerError, "InnerError");
             //}
-            
+
         }
 
 

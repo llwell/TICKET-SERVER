@@ -19,6 +19,70 @@ namespace Ticket_Server.Buss
         {
             return true;
         }
+        /// <summary>
+        /// 获取二维码
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public object Do_GetQRCoder(object param)
+        {
+            ListParam listParam = JsonConvert.DeserializeObject<ListParam>(param.ToString());
+            if (listParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+#if DEBUG
+            var openId = listParam.token;
+#endif
+#if !DEBUG
+            AppBag appBag = AppContainer.GetAppBag(listParam.token);
+            if (appBag==null)
+            {
+                throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+            }
+            var openId = appBag.Values;
+#endif
 
+            UserDao userDao = new UserDao();
+            string s = userDao.getQRCoder(openId);
+            if (s != "")
+            {
+                return s;
+            }
+            else
+            {
+                throw new ApiException(CodeMessage.QRCoderError, "QRCoderError");
+            }
+
+        }
+
+        /// <summary>
+        /// 根据小票编号获取小票信息
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public object Do_UpdateQRCoder(object param)
+        {
+            ItemParam itemParam = JsonConvert.DeserializeObject<ItemParam>(param.ToString());
+            if (itemParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+#if DEBUG
+            var openId = itemParam.token;
+#endif
+#if !DEBUG
+                AppBag appBag = AppContainer.GetAppBag(itemParam.token);
+                if (appBag==null)
+                {
+                    throw new ApiException(CodeMessage.GetUserError, "GetUserError");
+                }
+                var openId = appBag.Values;
+#endif
+
+            UserDao userDao = new UserDao();
+
+            return userDao.updateQRCode(openId);
+        }
     }
 }

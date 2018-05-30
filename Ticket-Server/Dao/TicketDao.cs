@@ -242,19 +242,6 @@ namespace Ticket_Server.Dao
             }
 
         }
-        public string getQRCoder(string openId)
-        {
-            string sql = "select qrcoder from t_user_list where openId = '" + openId + "'";
-            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_user_list").Tables[0];
-            if (dt.Rows.Count > 0)
-            {
-                return dt.Rows[0][0].ToString();
-            }
-            else
-            {
-                return "";
-            }
-        }
 
         /// <summary>
         /// 将Base64位码保存成图片
@@ -283,18 +270,17 @@ namespace Ticket_Server.Dao
         {
             try
             {
-                string imgFileName = fileName;
-                string contentType = Path.GetExtension(imgFileName);
+                string contentType = Path.GetExtension(fileName);
 
                 OssClient client = OssManager.GetInstance();
                 ObjectMetadata metadata = new ObjectMetadata();
                 // 可以设定自定义的metadata。
                 metadata.ContentType = contentType;
                 metadata.UserMetadata.Add("uname", "airong");
-                metadata.UserMetadata.Add("fromfileName", imgFileName);
+                metadata.UserMetadata.Add("fromfileName", fileName);
                 using (var fs = File.OpenRead(path + "\\" + fileName))
                 {
-                    var ret = client.PutObject(Global.OssBucket, Global.OssDir + imgFileName, fs, metadata);
+                    var ret = client.PutObject(Global.OssBucket, Global.OssDir + fileName, fs, metadata);
                 }
                 return true;
             }
