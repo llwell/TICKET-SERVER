@@ -70,9 +70,8 @@ namespace Ticket_Server.Dao
                 QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
                 QRCodeData qrCodeData = qrGenerator.CreateQrCode(drawCode, QRCodeGenerator.ECCLevel.Q);
                 QRCode qrcode = new QRCode(qrCodeData);
-
-                qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false).Save(path + "\\" + fileName);
-
+                Bitmap bitmap =  qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
+                bitmap.Save(path + "\\" + fileName);
                 OssClient client = OssManager.GetInstance();
                 ObjectMetadata metadata = new ObjectMetadata();
                 // 可以设定自定义的metadata。
