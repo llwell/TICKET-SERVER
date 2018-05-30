@@ -40,8 +40,6 @@ namespace Ticket_Server.Buss
             OAuthUserInfo userInfo = JsonConvert.DeserializeObject<OAuthUserInfo>(appBag.AppObj.ToString());
             if (appBag != null)
             {
-                UserDao userDao = new UserDao();
-                userDao.insertUser(userInfo);
                 return userInfo;
             }
             else

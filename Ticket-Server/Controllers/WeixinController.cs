@@ -14,6 +14,7 @@ using Senparc.Weixin.HttpUtility;
 using Senparc.Weixin.Containers;
 using Senparc.Weixin.WxOpen.Containers;
 using Newtonsoft.Json;
+using Ticket_Server.Dao;
 
 namespace Ticket_Server.Controllers
 {
@@ -62,6 +63,9 @@ namespace Ticket_Server.Controllers
                 string jsonUser = JsonConvert.SerializeObject(userInfo);
 
                 var appBag = AppContainer.UpdateAppBag(null, userInfo.openid, jsonUser);
+
+                UserDao userDao = new UserDao();
+                userDao.insertUser(userInfo);
 
                 return Redirect(returnUrl + "#/?token=" + appBag.Key);
             }
