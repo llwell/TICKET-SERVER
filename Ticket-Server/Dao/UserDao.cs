@@ -2,6 +2,7 @@
 using Com.ACBC.Framework.Database;
 using QRCoder;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
+using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -86,7 +87,8 @@ namespace Ticket_Server.Dao
             }
             catch (System.Exception ex)
             {
-                return ex.ToString();
+                Console.WriteLine(ex.ToString());
+                return ex.ToString().Replace("'","’");
             }
             
         }
