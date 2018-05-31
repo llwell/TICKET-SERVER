@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <RootNamespace>Ticket_Server</RootNamespace>
     <AssemblyName>Ticket_Server</AssemblyName>
     <ServerGarbageCollection>false</ServerGarbageCollection>
