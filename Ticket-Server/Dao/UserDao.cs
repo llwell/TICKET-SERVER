@@ -4,7 +4,7 @@ using QRCoder;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using System;
 using System.Data;
-using System.Drawing;
+using System.DrawingCore;
 using System.IO;
 using Ticket_Server.Common;
 
@@ -70,7 +70,7 @@ namespace Ticket_Server.Dao
                 QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
                 QRCodeData qrCodeData = qrGenerator.CreateQrCode(drawCode, QRCodeGenerator.ECCLevel.Q);
                 QRCode qrcode = new QRCode(qrCodeData);
-                Bitmap bitmap =  qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
+                Bitmap bitmap = qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
                 bitmap.Save(path + "\\" + fileName);
                 OssClient client = OssManager.GetInstance();
                 ObjectMetadata metadata = new ObjectMetadata();
@@ -91,7 +91,6 @@ namespace Ticket_Server.Dao
             }
             
         }
-
         public string updateQRCode(string openId)
         {
             string drawCode = initQRCoder(openId);
