@@ -1,6 +1,5 @@
 ﻿using Aliyun.OSS;
 using Com.ACBC.Framework.Database;
-using QRCodeCore;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using System;
 using System.Data;
@@ -64,41 +63,41 @@ namespace Ticket_Server.Dao
         }
 
 
-        public string initQRCoder(string openId)
-        {
-            try
-            {
-                ZXing.Core.BarcodeFormat barcodeFormat = new ZXing.Core.BarcodeFormat();
+        //public string initQRCoder(string openId)
+        //{
+            //try
+            //{
+            //    ZXing.Core.BarcodeFormat barcodeFormat = new ZXing.Core.BarcodeFormat();
 
 
 
-                string drawCode = System.Guid.NewGuid().ToString("N");
-                string fileName = openId + ".jpg";
-                QRCodeData qrCodeData = new QRCodeData(drawCode);
-                SvgQRCode qrcode = new SvgQRCode(qrCodeData);
-                string s = qrcode.Create(100);
+            //    string drawCode = System.Guid.NewGuid().ToString("N");
+            //    string fileName = openId + ".jpg";
+            //    QRCodeData qrCodeData = new QRCodeData(drawCode);
+            //    SvgQRCode qrcode = new SvgQRCode(qrCodeData);
+            //    string s = qrcode.Create(100);
                 
-                //Bitmap bitmap = qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
-                //bitmap.Save(path + "\\" + fileName);
-                OssClient client = OssManager.GetInstance();
-                ObjectMetadata metadata = new ObjectMetadata();
-                // 可以设定自定义的metadata。
-                metadata.ContentType = ".jpg";
-                metadata.UserMetadata.Add("uname", "airong");
-                metadata.UserMetadata.Add("fromfileName", fileName);
-                using (var fs = File.OpenRead(path + "\\" + fileName))
-                {
-                    var ret = client.PutObject(Global.OssBucket, Global.OssDir + fileName, fs, metadata);
-                }
-                return drawCode;
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return ex.ToString().Replace("'","’");
-            }
+            //    //Bitmap bitmap = qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
+            //    //bitmap.Save(path + "\\" + fileName);
+            //    OssClient client = OssManager.GetInstance();
+            //    ObjectMetadata metadata = new ObjectMetadata();
+            //    // 可以设定自定义的metadata。
+            //    metadata.ContentType = ".jpg";
+            //    metadata.UserMetadata.Add("uname", "airong");
+            //    metadata.UserMetadata.Add("fromfileName", fileName);
+            //    using (var fs = File.OpenRead(path + "\\" + fileName))
+            //    {
+            //        var ret = client.PutObject(Global.OssBucket, Global.OssDir + fileName, fs, metadata);
+            //    }
+            //    return drawCode;
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    Console.WriteLine(ex.ToString());
+            //    return ex.ToString().Replace("'","’");
+            //}
             
-        }
+        //}
         public string updateQRCode(string openId)
         {
             string drawCode = System.Guid.NewGuid().ToString("N");
