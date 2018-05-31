@@ -1,10 +1,9 @@
 ﻿using Aliyun.OSS;
 using Com.ACBC.Framework.Database;
-using QRCoder;
+using QRCodeCore;
 using Senparc.Weixin.MP.AdvancedAPIs.OAuth;
 using System;
 using System.Data;
-using System.DrawingCore;
 using System.IO;
 using Ticket_Server.Common;
 
@@ -23,7 +22,7 @@ namespace Ticket_Server.Dao
         }
         public string getQRCoder(string openId)
         {
-            string sql = "select qrcode from t_daigou_user where openId = '" + openId + "'";
+            string sql = "select drawCode from t_daigou_user where openId = '" + openId + "'";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_daigou_user").Tables[0];
             if (dt.Rows.Count > 0)
             {
@@ -41,10 +40,14 @@ namespace Ticket_Server.Dao
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_daigou_ticket").Tables[0];
             if (dt.Rows.Count == 0)
             {
+                //string insql = "insert into t_daigou_user(openId,nickname,sex,province,city,country,headimgurl,drawCode,qrcode) " +
+                //    "values('" + userInfo.openid + "','" + userInfo.nickname + "','" + userInfo.sex + "'," +
+                //    "'" + userInfo.province + "','" + userInfo.city + "','" + userInfo.country + "'," +
+                //    "'" + userInfo.headimgurl + "','" + initQRCoder(userInfo.openid) + "','" + Global.OssUrl + Global.OssDir + userInfo.openid + ".jpg" + "')";
                 string insql = "insert into t_daigou_user(openId,nickname,sex,province,city,country,headimgurl,drawCode,qrcode) " +
                     "values('" + userInfo.openid + "','" + userInfo.nickname + "','" + userInfo.sex + "'," +
                     "'" + userInfo.province + "','" + userInfo.city + "','" + userInfo.country + "'," +
-                    "'" + userInfo.headimgurl + "','" + initQRCoder(userInfo.openid) + "','" + Global.OssUrl + Global.OssDir + userInfo.openid + ".jpg" + "')";
+                    "'" + userInfo.headimgurl + "','" + System.Guid.NewGuid().ToString("N") + "','" + Global.OssUrl + Global.OssDir + userInfo.openid + ".jpg" + "')";
                 DatabaseOperationWeb.ExecuteDML(insql);
             }
         }
@@ -55,7 +58,7 @@ namespace Ticket_Server.Dao
             if (dt.Rows.Count == 0)
             {
                 string insql = "insert into t_daigou_user(openId,drawCode,qrcode) " +
-                    "values('" + openId + "','" + initQRCoder(openId) + "','" + Global.OssUrl + Global.OssDir + openId + ".jpg" + "')";
+                    "values('" + openId + "','" + System.Guid.NewGuid().ToString("N") + "','" + Global.OssUrl + Global.OssDir + openId + ".jpg" + "')";
                 DatabaseOperationWeb.ExecuteDML(insql);
             }
         }
@@ -65,13 +68,18 @@ namespace Ticket_Server.Dao
         {
             try
             {
+                ZXing.Core.BarcodeFormat barcodeFormat = new ZXing.Core.BarcodeFormat();
+
+
+
                 string drawCode = System.Guid.NewGuid().ToString("N");
                 string fileName = openId + ".jpg";
-                QRCodeGenerator qrGenerator = new QRCoder.QRCodeGenerator();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(drawCode, QRCodeGenerator.ECCLevel.Q);
-                QRCode qrcode = new QRCode(qrCodeData);
-                Bitmap bitmap = qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
-                bitmap.Save(path + "\\" + fileName);
+                QRCodeData qrCodeData = new QRCodeData(drawCode);
+                SvgQRCode qrcode = new SvgQRCode(qrCodeData);
+                string s = qrcode.Create(100);
+                
+                //Bitmap bitmap = qrcode.GetGraphic(5, Color.Black, Color.White, null, 15, 6, false);
+                //bitmap.Save(path + "\\" + fileName);
                 OssClient client = OssManager.GetInstance();
                 ObjectMetadata metadata = new ObjectMetadata();
                 // 可以设定自定义的metadata。
@@ -93,13 +101,15 @@ namespace Ticket_Server.Dao
         }
         public string updateQRCode(string openId)
         {
-            string drawCode = initQRCoder(openId);
+            string drawCode = System.Guid.NewGuid().ToString("N");
+            //string drawCode = initQRCoder(openId);
             if (drawCode!="")
             {
                 string sql = "update t_daigou_user set drawCode = '"+ drawCode + "' where openId ='" + openId + "'";
                 DatabaseOperationWeb.ExecuteDML(sql);
             }
-            return Global.OssUrl + Global.OssDir + openId + ".jpg";
+            //return Global.OssUrl + Global.OssDir + openId + ".jpg";
+            return drawCode;
         }
     }
 }
