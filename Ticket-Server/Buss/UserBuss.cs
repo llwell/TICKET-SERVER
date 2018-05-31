@@ -47,7 +47,9 @@ namespace Ticket_Server.Buss
             string s = userDao.getQRCoder(openId);
             if (s != "")
             {
-                return s;
+                UserResult ur = new UserResult();
+                ur.url = s;
+                return ur;
             }
             else
             {
@@ -82,7 +84,13 @@ namespace Ticket_Server.Buss
 
             UserDao userDao = new UserDao();
 
-            return userDao.updateQRCode(openId);
+            UserResult ur = new UserResult();
+            ur.url = userDao.updateQRCode(openId);
+            return ur;
         }
+    }
+    public class UserResult
+    {
+        public string url;
     }
 }
