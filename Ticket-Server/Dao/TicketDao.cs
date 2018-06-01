@@ -286,8 +286,16 @@ namespace Ticket_Server.Dao
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
-                return false;
+                try
+                {
+                    string sql = "insert into t_log_error(code,errLog) values('updateOssError','" + e.ToString().Replace("'", "‘") + "')";
+                    DatabaseOperationWeb.ExecuteDML(sql);
+                    return false;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
             
         }
