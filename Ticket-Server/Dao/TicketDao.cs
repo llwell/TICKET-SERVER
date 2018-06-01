@@ -68,7 +68,7 @@ namespace Ticket_Server.Dao
             }
             listResult.tabPaneOneData = tabPaneOneData;
             listResult.tabPaneTwoData = tabPaneTwoData;
-            listResult.tabPaneThreeData = tabPaneTwoData;
+            listResult.tabPaneThreeData = tabPaneThreeData;
             return listResult;
         }
 
