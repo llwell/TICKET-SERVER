@@ -270,12 +270,9 @@ namespace Ticket_Server.Dao
         {
             try
             {
-                string contentType = Path.GetExtension(fileName);
-
                 OssClient client = OssManager.GetInstance();
                 ObjectMetadata metadata = new ObjectMetadata();
                 // 可以设定自定义的metadata。
-                metadata.ContentType = contentType;
                 metadata.UserMetadata.Add("uname", "airong");
                 metadata.UserMetadata.Add("fromfileName", fileName);
                 using (var fs = File.OpenRead(path + "\\" + fileName))
